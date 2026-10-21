@@ -1,0 +1,9 @@
+# export output, including the id map (your project and task ids)
+vikunja-export/
+*.local.json
+
+# credentials
+.env
+
+__pycache__/
+*.pyc
