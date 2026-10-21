@@ -10,8 +10,12 @@ python3 vikunja2kaneo.py export
 
 export KANEO_URL=https://kaneo.example.com KANEO_TOKEN=xxx
 python3 vikunja2kaneo.py import            # dry run, prints the plan
-python3 vikunja2kaneo.py import --apply    # writes
+python3 vikunja2kaneo.py import --apply    # shows the plan, asks, then writes
 ```
+
+`--apply` prints what it is about to do — projects, tasks, and which board
+columns each project needs — and waits for a `y`. It refuses to run in a pipe
+without `--yes`, so a script can't write to your instance by accident.
 
 `export` produces two files in `./vikunja-export/`:
 
@@ -37,8 +41,9 @@ ignored.
 
 Per task: **title**, **description**, **priority**, **due date**, and the
 kanban column. Labels, assignees, comments, attachments and subtasks are
-**not** migrated — Vikunja's list endpoint doesn't return them and Kaneo's
-create endpoint doesn't take them.
+**not** migrated: Vikunja's task list can only expand `subtasks`, `buckets`
+and `comments`, so labels and assignees would each cost one extra request per
+task — a few hundred tasks would spend the whole rate limit on them.
 
 Each description ends with a provenance line, so anything can be traced back:
 
@@ -48,19 +53,25 @@ _Migrated from Vikunja #562 (column: To-Do)_
 
 ### Columns
 
-| Vikunja column | Kaneo column |
+| Vikunja column | Kaneo |
 |---|---|
-| Backlog | `backlog` (created on demand) |
-| To-Do | `to-do` |
-| Doing | `in-progress` |
-| Testing | `in-review` |
-| anything else | `to-do` |
+| Backlog | the `planned` status — Kaneo's Backlog view, not a column |
+| To-Do | column `to-do` |
+| Doing | column `in-progress` |
+| Testing | column `in-review` |
+| anything else | a column with the same name, created if missing |
 
-Kaneo ships with `to-do / in-progress / in-review / done`. The importer adds a
-`Backlog` column to every project it touches and reorders the columns so
-Backlog sits first. Column matching is case-insensitive on the Vikunja column
-name — edit the `STATUS` dict at the top of the file if your columns are
-called something else.
+Kaneo's **Backlog is a status, not a board column**: tasks with status
+`planned` live in the project's Backlog tab and stay off the board. So Vikunja
+tasks that were sitting in Backlog are migrated to `planned`, and no column is
+invented for them. (A Kaneo column *named* "Backlog" is just a normal board
+column — it does not replace the view.)
+
+For the rest, the importer looks at the columns the tasks actually need, checks
+what the project has, and creates only what is missing — then orders the board
+the way the source board was ordered. A Vikunja column with no Kaneo equivalent
+keeps its own name instead of being folded into `to-do`. Columns that would
+hold no task are never created.
 
 ### Priorities
 

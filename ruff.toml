@@ -1,0 +1,10 @@
+# The script declares 3.8+ (README, and a runtime guard at the top of the file).
+# Without this, ruff infers the target from whatever interpreter runs it and
+# flags 3.8-compatible code as outdated.
+target-version = "py38"
+
+[lint]
+# UP036 calls the `sys.version_info < (3, 8)` guard dead code, since it can
+# never be true at the declared minimum. It is there for people who run the
+# script on 3.7, so they get a clear message instead of a TypeError.
+ignore = ["UP036"]
