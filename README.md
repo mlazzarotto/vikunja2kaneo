@@ -1,5 +1,10 @@
 # vikunja2kaneo
 
+[![CI](https://github.com/mlazzarotto/vikunja2kaneo/actions/workflows/ci.yml/badge.svg)](https://github.com/mlazzarotto/vikunja2kaneo/actions/workflows/ci.yml)
+[![Python](https://img.shields.io/badge/python-3.8%20%7C%203.13-3776AB?logo=python&logoColor=white)](https://github.com/mlazzarotto/vikunja2kaneo/blob/main/.github/workflows/ci.yml)
+[![Dependencies](https://img.shields.io/badge/dependencies-none-brightgreen)](https://github.com/mlazzarotto/vikunja2kaneo)
+[![License](https://img.shields.io/badge/license-MIT-blue)](https://github.com/mlazzarotto/vikunja2kaneo/blob/main/LICENSE)
+
 Move your **open Vikunja tasks, with their projects**, into [Kaneo](https://kaneo.app).
 
 Two commands, one Python file, no dependencies.
