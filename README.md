@@ -120,8 +120,8 @@ not something a migration script should do silently.
 
 ## Notes and limits
 
-- **Rate limit.** Kaneo allows 100 requests per window per API key. A few
-  hundred tasks will hit it; the script waits for `Retry-After` and continues.
+- **Rate limit.** A Kaneo API key allows 100 requests per minute. A few hundred
+  tasks will hit it; the script waits for `Retry-After` and continues.
 - **Descriptions** are HTML in Vikunja and markdown in Kaneo. Links, line
   breaks and list items are converted; exotic markup (tables, inline styles) is
   flattened to text.
