@@ -28,7 +28,9 @@ without `--yes`, so a script can't write to your instance by accident.
 
 - Python 3.8+ (stdlib only)
 - A Vikunja API token: *Settings → API Tokens*, needs task read access
-- A Kaneo API token with project and task write access
+- A Kaneo API token with project and task write access. On **Kaneo cloud**
+  (`cloud.kaneo.app`) the same API is served at the same paths and API keys are
+  enabled, so create one in the app and use it as `KANEO_TOKEN`
 - Both instances reachable over HTTP(S)
 
 Nothing is installed and nothing is imported outside the standard library.
@@ -127,6 +129,9 @@ not something a migration script should do silently.
   Vikunja's zero date (`0001-01-01`) is treated as "no due date".
 - **One workspace.** Projects are created in the first workspace the token can
   see. Pass a token that only sees the workspace you want if that's ambiguous.
+- **Tested against** a self-hosted Kaneo and Kaneo cloud, October 2026: 83
+  tasks across 6 projects, read back from the API. It needs a Kaneo that has the
+  Backlog view (the `planned` status); older releases don't.
 - **Not a sync.** It's a one-way copy, run once. Running it again after adding
   tasks to Vikunja will pick up the new ones only.
 
